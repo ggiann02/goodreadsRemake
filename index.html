@@ -3,28 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>My Goodreads Books</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 15px;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      padding: 5px 0;
-      border-bottom: 1px solid #ddd;
-    }
-  </style>
+  <link rel="stylesheet" href="includes/style.css">
 </head>
 <body>
   <h1>My Goodreads Library</h1>
   <ul id="book-list"></ul>
 
+  <!-- PapaParse for CSV parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Custom script -->
   <script src="includes/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,48 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #553b08;
+}
+
+h1 {
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 5px 0;
+}
+
+/* Book list grid layout */
+#book-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  align-items: end;
+  padding: 20px;
+}
+
+/* Individual book list items */
+#book-list li {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  padding: 0;
+}
+
+/* Book rectangle styling */
+.book-rectangle {
+  width: 100%;
+  background-color: #E9E5CD;
+  margin: 0;
+  position: relative;
+  border-radius: 4px;
+  transform: scaleY(0); /* start squashed */
+  transform-origin: bottom;
+}

@@ -1,37 +1,62 @@
-// Utility: parse CSV (basic, assumes no commas inside quotes)
-function parseCSV(text) {
-  const rows = text.split("\n").map(row => row.split(","));
-  return rows;
-}
+let bookPages = []; // Global list to store page counts
 
 function loadBooks() {
-  fetch("goodreads_library_export.csv")
-    .then(res => res.text())
-    .then(text => {
-      const data = parseCSV(text);
+  Papa.parse("includes/goodreads_library_export.csv", {
+    download: true,
+    header: true, // use first row as keys
+    complete: function(results) {
+      const data = results.data;
 
-      // Goodreads CSV has a header row — "Title" is usually column 1
-      const header = data[0];
-      const titleIndex = header.indexOf("Title");
-
-      if (titleIndex === -1) {
-        console.error("Couldn't find 'Title' column in CSV");
-        return;
-      }
-
-      const list = document.getElementById("book-list");
-      list.innerHTML = "";
-
-      // Skip header row
-      data.slice(1).forEach(row => {
-        if (row[titleIndex]) {
-          const li = document.createElement("li");
-          li.textContent = row[titleIndex];
-          list.appendChild(li);
+      bookPages = [];
+      data.forEach(row => {
+        const pages = parseInt(row["Number of Pages"]);
+        const title = row["Title"] || "Unknown";
+        if (pages) {
+          bookPages.push({ pages: pages, title: title });
         }
       });
-    })
-    .catch(err => console.error("Error loading CSV:", err));
+
+      displayRectangles();
+    },
+    error: function(err) {
+      console.error("Error parsing CSV:", err);
+    }
+  });
+}
+
+function displayRectangles() {
+  const list = document.getElementById("book-list");
+  list.innerHTML = "";
+
+  const maxPages = Math.max(...bookPages.map(book => book.pages));
+
+  bookPages.forEach(book => {
+    const li = document.createElement("li");
+    const rectangle = document.createElement("div");
+    rectangle.className = "book-rectangle";
+
+    const maxHeight = 200;
+    const height = (book.pages / maxPages) * maxHeight;
+    rectangle.style.height = height + "px";
+
+    rectangle.title = `${book.title} - ${book.pages} pages`;
+
+    li.appendChild(rectangle);
+    list.appendChild(li);
+  });
+
+  // Animate all rectangles with GSAP stagger when the grid scrolls into view
+  gsap.from(".book-rectangle", {
+    scrollTrigger: {
+      trigger: "#book-list",
+      start: "top 80%",
+    },
+    scaleY: 0,
+    transformOrigin: "bottom",
+    duration: 1,
+    ease: "power3.out",
+    stagger: 0.05
+  });
 }
 
 loadBooks();
